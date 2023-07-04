@@ -16,6 +16,11 @@ class LoanSerializer(serializers.Serializer):
         decoded_token = AccessToken(token)
 
         return_date = datetime.now() + timedelta(days=7)
+        if return_date.weekday() == 5:
+            return_date = return_date + timedelta(days=2)
+
+        if return_date.weekday() == 6:
+            return_date = return_date + timedelta(days=1)
 
         user_id = decoded_token["user_id"]
         user_id = decoded_token["user_id"]
