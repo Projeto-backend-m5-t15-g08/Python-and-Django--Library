@@ -20,6 +20,14 @@ class UserSerializer(serializers.Serializer):
             obj = "colaborator"
             return self
 
+    def update(self, instance: User, validated_data: dict) -> User:
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.save()
+
+        return instance
+
     def create(self, validated_data: dict):
         user_status = validated_data.get("user_status")
         if user_status == "colaborator":

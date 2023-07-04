@@ -8,8 +8,8 @@ class UserChoices(models.TextChoices):
 
 
 class User(AbstractUser):
-    email = models.CharField(max_length=50, unique=True, null=False)
-    password = models.CharField(max_length=50, null=False)
+    email = models.CharField(max_length=255, unique=True, null=False)
+    password = models.CharField(max_length=255, null=False)
     user_status = models.CharField(
         max_length=20,
         null=True,
