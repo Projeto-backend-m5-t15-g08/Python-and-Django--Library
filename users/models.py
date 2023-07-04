@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class UserChoices(models.TextChoices):
     STUDENT = ("student",)
-    COLABORATOR = ("colaborator",)
+    COLLABORATOR = ("collaborator",)
 
 
 class User(AbstractUser):
