@@ -174,3 +174,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 AUTH_USER_MODEL = "users.User"
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "G8 BiblioteKA API",
+    "DESCRIPTION": "Projeto de uma API para gerenciar o empréstimo de livros uma biblioteca",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
