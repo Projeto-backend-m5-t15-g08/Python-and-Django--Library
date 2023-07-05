@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Loan(models.Model):
-    return_date = models.DateTimeField(auto_now_add=True)
+    return_date = models.DateTimeField()
 
     copy = models.ForeignKey(
         "copies.Copy", on_delete=models.CASCADE, related_name="loan"
