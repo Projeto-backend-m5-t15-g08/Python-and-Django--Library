@@ -14,6 +14,7 @@ class UserSerializer(serializers.Serializer):
         allow_null=True,
     )
     is_superuser = serializers.BooleanField(write_only=True, default=False)
+    is_active = serializers.BooleanField(default=True)
 
     def get_user_status(self, obj):
         if obj != "student" or None:
