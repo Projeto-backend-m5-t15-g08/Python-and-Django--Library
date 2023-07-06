@@ -1,14 +1,17 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from users.models import User
-from users.permissions import IsColaborator
+from users.permissions import IsCollaborator, IsCollaboratorOrStudent
 from users.serializers import UserSerializer
+from rest_framework.views import Response
 
 
 class UserView(ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaboratorOrStudent]
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -16,7 +19,11 @@ class UserView(ListCreateAPIView):
 
 class UserDetailView(RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaborator]
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def perform_destroy(self, instance: User):
+        instance.is_active = False
+        instance.save()

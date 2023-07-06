@@ -14,10 +14,11 @@ class UserSerializer(serializers.Serializer):
         allow_null=True,
     )
     is_superuser = serializers.BooleanField(write_only=True, default=False)
+    is_active = serializers.BooleanField(default=True)
 
     def get_user_status(self, obj):
         if obj != "student" or None:
-            obj = "colaborator"
+            obj = "collaborator"
             return self
 
     def update(self, instance: User, validated_data: dict) -> User:
@@ -30,6 +31,6 @@ class UserSerializer(serializers.Serializer):
 
     def create(self, validated_data: dict):
         user_status = validated_data.get("user_status")
-        if user_status == "colaborator":
+        if user_status == "collaborator":
             validated_data["is_superuser"] = True
         return User.objects.create_user(**validated_data)
