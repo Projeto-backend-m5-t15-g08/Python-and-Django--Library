@@ -11,6 +11,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from copies.models import Copy
 from datetime import datetime
+import pytz
+from django.forms.models import model_to_dict
 
 
 class LoanView(CreateAPIView):
@@ -31,21 +33,23 @@ class LoanView(CreateAPIView):
                 status=status.HTTP_201_CREATED,
             )
 
-        user_id = request
-
-        print(request)
-
-        # user_loans = Loan.objects.filter(id=user_id)
+        user_id = request.user.id
+        user_loans = Loan.objects.filter(user_id=user_id)
         today = datetime.now()
 
-        # for loan in user_loans:
-        #     if loan["return_date"] > today:
-        #         return Response(
-        #             {
-        #                 "message": "Usuário com empréstimo vencido, realize a devolução antes de alugar outro livro"
-        #             },
-        #             status=status.HTTP_400_BAD_REQUEST,
-        #         )
+        loans_list = []
+        for loan in user_loans:
+            loan_dict = model_to_dict(loan)
+            loans_list.append(loan_dict)
+
+        for loan in loans_list:
+            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(tzinfo=pytz.utc):
+                return Response(
+                    {
+                        "message": "Usuário com empréstimo vencido, realize a devolução antes de alugar outro livro"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

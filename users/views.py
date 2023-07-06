@@ -6,7 +6,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.models import User
 from users.permissions import IsCollaborator, IsCollaboratorOrStudent
 from users.serializers import UserSerializer
-from rest_framework.views import Response
 
 
 class UserView(ListCreateAPIView):
