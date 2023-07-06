@@ -9,12 +9,12 @@ from books.models import Book
 from books.serializer import BookSerializer
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.permissions import IsColaborator
+from users.permissions import IsCollaborator
 
 
 class BookView(ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaborator]
 
     serializer_class = BookSerializer
 
@@ -24,7 +24,7 @@ class BookView(ListCreateAPIView):
 
 class BookDetailView(RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaborator]
 
     queryset = Book
     serializer_class = BookSerializer

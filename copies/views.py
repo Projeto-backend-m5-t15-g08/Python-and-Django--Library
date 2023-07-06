@@ -5,12 +5,12 @@ from copies.serializer import CopySerializer
 
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.permissions import IsColaborator
+from users.permissions import IsCollaborator
 
 
 class CopyView(CreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaborator]
 
     queryset = Copy
     serializer_class = CopySerializer
@@ -18,7 +18,7 @@ class CopyView(CreateAPIView):
 
 class CopyDetailView(RetrieveDestroyAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsCollaborator]
 
     queryset = Copy
     serializer_class = CopySerializer
