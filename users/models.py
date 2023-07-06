@@ -16,4 +16,3 @@ class User(AbstractUser):
         choices=UserChoices.choices,
         default=UserChoices.STUDENT,
     )
-    pass
