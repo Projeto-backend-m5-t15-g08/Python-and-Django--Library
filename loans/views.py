@@ -8,13 +8,16 @@ from rest_framework.views import status, Response
 
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.permissions import IsColaborator
+from rest_framework.permissions import IsAuthenticated
 from copies.models import Copy
+from datetime import datetime
+import pytz
+from django.forms.models import model_to_dict
 
 
 class LoanView(CreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
+    permission_classes = [IsAuthenticated]
 
     queryset = Loan
     serializer_class = LoanSerializer
@@ -30,6 +33,24 @@ class LoanView(CreateAPIView):
                 status=status.HTTP_201_CREATED,
             )
 
+        user_id = request.user.id
+        user_loans = Loan.objects.filter(user_id=user_id)
+        today = datetime.now()
+
+        loans_list = []
+        for loan in user_loans:
+            loan_dict = model_to_dict(loan)
+            loans_list.append(loan_dict)
+
+        for loan in loans_list:
+            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(tzinfo=pytz.utc):
+                return Response(
+                    {
+                        "message": "Usuário com empréstimo vencido, realize a devolução antes de alugar outro livro"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -37,9 +58,7 @@ class LoanView(CreateAPIView):
         return_data = serializer.data
         return_data["return_date"] = serializer.data["return_date"][:10]
 
-        return Response(
-            return_data, status=status.HTTP_201_CREATED, headers=headers
-        )
+        return Response(return_data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class LoanDetailView(ListAPIView):
