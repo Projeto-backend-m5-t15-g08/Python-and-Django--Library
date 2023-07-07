@@ -30,5 +30,8 @@ class LoanSerializer(serializers.Serializer):
         copy.save()
 
         return Loan.objects.create(
-            **validated_data, user_id=user_id, copy_id=copy_id, return_date=return_date
+            **validated_data,
+            user_id=user_id,
+            copy_id=copy_id,
+            return_date=return_date
         )
