@@ -6,7 +6,6 @@ from books.models import Book
 from books_follow.serializers import BookFollowSerializer
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.permissions import IsColaborator
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -22,7 +21,6 @@ class BookFollowView(ListAPIView):
 
 class BookFollowViewCreate(CreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsColaborator]
 
     queryset = BookFollow
     serializer_class = BookFollowSerializer
