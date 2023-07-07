@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    ListCreateAPIView,
+)
 
 from loans.models import Loan
 from loans.serializers import LoanSerializer
 from rest_framework.views import status, Response
-
-
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.permissions import IsColaborator
 from copies.models import Copy
