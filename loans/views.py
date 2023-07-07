@@ -15,6 +15,8 @@ from copies.models import Copy
 from datetime import datetime
 import pytz
 from django.forms.models import model_to_dict
+from users.models import User
+from django.shortcuts import get_object_or_404
 
 
 class LoanView(CreateAPIView):
@@ -45,7 +47,9 @@ class LoanView(CreateAPIView):
             loans_list.append(loan_dict)
 
         for loan in loans_list:
-            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(tzinfo=pytz.utc):
+            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(
+                tzinfo=pytz.utc
+            ):
                 return Response(
                     {
                         "message": "Usuário com empréstimo vencido, realize a devolução antes de alugar outro livro"
@@ -66,10 +70,15 @@ class LoanView(CreateAPIView):
 class LoanDetailView(ListAPIView):
     authentication_classes = [JWTAuthentication]
     # permission_classes = [IsColaborator]
-
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(user=self.request.user)
+        username = self.request.user
+        user = get_object_or_404(User, username=username)
+        if user.is_superuser:
+            queryset = super().get_queryset()
+            return queryset
+        else:
+            queryset = super().get_queryset()
+            return queryset.filter(user=self.request.user)
