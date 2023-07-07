@@ -1,6 +1,11 @@
-# m5_G8_projetofinal-backend_BiblioteKA
+# G8_BiblioteKA
 
-    Uma aplicação de gerenciamento de uma biblioteca, como admin voce pode criar livros e criar as copias do livro que vao estar disponíveis, gerenciar as contas de todos os usuários, como usuário criar um conta e alugar livros além de poder seguir os livros que voce tem interesse e receber um email quando o livro estiver disponível para alugar
+# Sobre
+
+    Uma aplicação de gerenciamento de uma biblioteca,
+    como admin voce pode criar livros e criar as copias do livro que vao estar disponíveis,
+    gerenciar as contas de todos os usuários, como usuário criar um conta e alugar livros
+    além de poder seguir os livros que voce tem interesse e receber um email quando o livro estiver disponível para alugar
 
 # Doc
 
