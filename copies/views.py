@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, RetrieveDestroyAPIView
 from copies.models import Copy
 from copies.serializer import CopySerializer

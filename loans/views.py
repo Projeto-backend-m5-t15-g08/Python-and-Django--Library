@@ -1,9 +1,6 @@
-from django.shortcuts import render
-
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
-    ListCreateAPIView,
 )
 
 from loans.models import Loan
@@ -47,9 +44,7 @@ class LoanView(CreateAPIView):
             loans_list.append(loan_dict)
 
         for loan in loans_list:
-            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(
-                tzinfo=pytz.utc
-            ):
+            if loan["return_date"].replace(tzinfo=pytz.utc) > today.replace(tzinfo=pytz.utc):
                 return Response(
                     {
                         "message": "Usuário com empréstimo vencido, realize a devolução antes de alugar outro livro"

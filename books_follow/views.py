@@ -4,6 +4,7 @@ from copies.models import Copy
 from users.models import User
 from books.models import Book
 from books_follow.serializers import BookFollowSerializer
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.core.mail import send_mail
@@ -14,6 +15,7 @@ from django.shortcuts import get_object_or_404
 
 class BookFollowView(ListAPIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = BookFollow.objects.all()
     serializer_class = BookFollowSerializer
@@ -21,6 +23,7 @@ class BookFollowView(ListAPIView):
 
 class BookFollowViewCreate(CreateAPIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = BookFollow
     serializer_class = BookFollowSerializer
@@ -36,9 +39,7 @@ class BookFollowViewCreate(CreateAPIView):
         user = get_object_or_404(User, username=username)
 
         if copy.active_loan:
-            message_sendEmail = (
-                f"Livro {book.title} - não esta disponível, aguarde retorno."
-            )
+            message_sendEmail = f"Livro {book.title} - não esta disponível, aguarde retorno."
 
         subjectstr = "O livro foi adicionado em favoritos!"
         recipient_liststr = [user.email]
